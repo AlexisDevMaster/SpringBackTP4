@@ -1,10 +1,13 @@
 package spring.tp4.product.seller.modele;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonMerge;
+import spring.tp4.product.product.modele.Product;
 import spring.tp4.product.product_seller.modele.ProductSeller;
 
 import javax.persistence.*;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -17,9 +20,9 @@ public class Seller {
 
     private String name;
 
-//    @OneToMany(mappedBy = "seller", fetch = FetchType.LAZY)
-//    Set<ProductSeller> products = new HashSet<>();
-
+    @OneToMany(mappedBy="seller",  cascade = CascadeType.MERGE)
+    @JsonMerge
+    private Set<ProductSeller> products = new HashSet<>();
 
     protected Seller() { }
 
@@ -51,11 +54,12 @@ public class Seller {
         this.name = name;
     }
 
-//    public Set<ProductSeller> getProducts() {
-//        return products;
-//    }
-//
-//    public void setProducts(Set<ProductSeller> products) {
-//        this.products = products;
-//    }
+    public Set<ProductSeller> getProducts() {
+        return products;
+    }
+
+    public void setProducts(Set<ProductSeller> products) {
+        this.products = products;
+    }
+
 }

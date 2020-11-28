@@ -1,24 +1,30 @@
 package spring.tp4.product.product.modele;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonMerge;
 import spring.tp4.product.product_seller.modele.ProductSeller;
 import spring.tp4.product.seller.modele.Seller;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Entity
 public class Product {
 
     @Id
+    @JsonIgnore
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     private String name;
 
-//    @OneToMany(mappedBy = "product")
-//    Set<ProductSeller> productsRegisterd;
+    @OneToMany(mappedBy = "product", cascade = CascadeType.MERGE)
+    @JsonIgnore
+    private Set<ProductSeller> sellers = new HashSet<>();
 
     protected Product() { }
 
@@ -54,11 +60,12 @@ public class Product {
         this.name = name;
     }
 
-//    public Set<ProductSeller> getProductsRegisterd() {
-//        return productsRegisterd;
-//    }
-//
-//    public void setProductsRegisterd(Set<ProductSeller> productsRegisterd) {
-//        this.productsRegisterd = productsRegisterd;
-//    }
+    public Set<ProductSeller> getSellers() {
+        return sellers;
+    }
+
+    public void setSellers(Set<ProductSeller> sellers) {
+        this.sellers = sellers;
+    }
 }
+

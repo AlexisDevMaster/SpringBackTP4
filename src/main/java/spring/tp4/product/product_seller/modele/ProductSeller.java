@@ -1,24 +1,30 @@
 package spring.tp4.product.product_seller.modele;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonMerge;
 import spring.tp4.product.product.modele.Product;
+import spring.tp4.product.product_seller.key.ProductSellerPK;
 import spring.tp4.product.seller.modele.Seller;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Entity(name="products_sellers")
 public class ProductSeller {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JsonIgnore
     Integer id;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "id_product")
     Product product;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "id_seller")
+    @JsonIgnore
     Seller seller;
 
     double price;
@@ -65,6 +71,5 @@ public class ProductSeller {
     public void setPrice(double price) {
         this.price = price;
     }
-
 
 }
